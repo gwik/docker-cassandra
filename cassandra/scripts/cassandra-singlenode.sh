@@ -2,7 +2,7 @@
 
 # Get running container's IP
 IP=`hostname --ip-address`
-if [ $# == 1 ]; then SEEDS="$1,$IP"; 
+if [ $# == 1 ]; then SEEDS="$1,$IP";
 else SEEDS="$IP"; fi
 
 
@@ -24,6 +24,7 @@ echo "JVM_OPTS=\"\$JVM_OPTS -Dcassandra.skip_wait_for_gossip_to_settle=0\"" >> $
 
 # Most likely not needed
 echo "JVM_OPTS=\"\$JVM_OPTS -Djava.rmi.server.hostname=$IP\"" >> $CASSANDRA_CONFIG/cassandra-env.sh
+
 
 # If configured in $CASSANDRA_DC, set the cassandra datacenter.
 if [ ! -z "$CASSANDRA_DC" ]; then

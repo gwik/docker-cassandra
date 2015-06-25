@@ -34,4 +34,8 @@ RUN rm -f /etc/security/limits.d/cassandra.conf
 
 EXPOSE 7199 7000 7001 9160 9042 22 8012 61621
 
+VOLUME /var/lib/cassandra
+
+COPY cassandra-env.sh /etc/cassandra/cassandra-env.sh
+
 CMD [""]
