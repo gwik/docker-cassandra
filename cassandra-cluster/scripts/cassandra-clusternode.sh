@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 
 # Get running container's IP
-IP=`hostname --ip-address | cut -f 1 -d ' '`
-if [ $# == 1 ]; then SEEDS="$1,$IP"; 
+if [ -z "$IP" ]; then
+	echo "no IP provided (env) get container's IP"
+	IP=`hostname --ip-address | cut -f 1 -d ' '`
+fi
+if [ $# == 1 ]; then SEEDS="$1,$IP";
 else SEEDS="$IP"; fi
 
 # Setup cluster name
@@ -31,10 +34,17 @@ if [ -z "$CASSANDRA_TOKEN" ]; then
 	echo "Missing initial token for Cassandra"
 	exit -1
 fi
+
 echo "JVM_OPTS=\"\$JVM_OPTS -Dcassandra.initial_token=$CASSANDRA_TOKEN\"" >> $CASSANDRA_CONFIG/cassandra-env.sh
 
 # Most likely not needed
 echo "JVM_OPTS=\"\$JVM_OPTS -Djava.rmi.server.hostname=$IP\"" >> $CASSANDRA_CONFIG/cassandra-env.sh
+
+echo "env:"
+cat "$CASSANDRA_CONFIG/cassandra-env.sh"
+echo "config:"
+cat "$CASSANDRA_CONFIG/cassandra.yaml"
+
 
 echo "Starting Cassandra on $IP..."
 
